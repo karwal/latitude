@@ -48,8 +48,8 @@ public class InputGenerator {
         deletePreviousFilesIfExist();
         FileWriter file = new FileWriter(TEMP_FILE_NAME);
         BufferedWriter output = new BufferedWriter(file);
-        int totalRecords = 0;
-        int totalSize = 0;
+        long totalRecords = 0;
+        long totalSize = 0;
         while (totalSize < fileZise) {
             try {
                 String firstName = referenceNames.get(new Random().nextInt(referenceNames.size() - 1));
@@ -73,6 +73,7 @@ public class InputGenerator {
         Path targetPath = Paths.get(INPUT_FILE_NAME);
         Files.move(fileToMovePath, targetPath);
         System.out.println("Total Records = " + totalRecords);
+        System.out.println("Total File Size = " + totalSize/1000000 + " MB");
     }
 
     private void deletePreviousFilesIfExist() throws IOException {

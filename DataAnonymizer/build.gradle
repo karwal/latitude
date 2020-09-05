@@ -1,39 +1,49 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.3.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
 }
 
 group = 'com.data.anonymizer'
 version = '0.0.1-SNAPSHOT'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.6.0'
+    testCompile group: 'org.apache.kafka', name: 'kafka-streams', version: '2.6.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot', version: '2.3.3.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.3.3.RELEASE'
+// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
 
-	implementation group: 'com.opencsv', name: 'opencsv', version: '5.2'
-	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.4.3'
-	implementation 'org.apache.camel:camel-kafka:3.4.3'
-	implementation 'org.apache.camel:camel-stream:3.4.3'
-	implementation 'org.apache.kafka:kafka_2.11:1.1.0'
-	implementation 'org.springframework.kafka:spring-kafka'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'org.springframework.kafka:spring-kafka-test'
+
+    //implementation 'org.apache.kafka:streams-quickstart-java:2.6.0'
+    implementation group: 'com.opencsv', name: 'opencsv', version: '5.2'
+    //implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.4.3'
+    //implementation 'org.apache.camel:camel-kafka:3.4.3'
+    //implementation 'org.apache.camel:camel-stream:3.4.3'
+    implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '2.6.0'
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.6.0'
+
+    //implementation 'org.springframework.kafka:spring-kafka'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
