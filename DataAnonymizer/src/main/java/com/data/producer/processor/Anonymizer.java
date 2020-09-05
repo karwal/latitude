@@ -11,6 +11,8 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -18,25 +20,35 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-
+@Component
 public class Anonymizer {
 
     private static long messageProcessed;
+
+    @Value("${kafkaInputTopic}")
+    private String kafkaInputTopic;
+    @Value("${kafkaOutputTopic}")
+    private String kafkaOutputTopic;
+    @Value("${kafkaBrokerHost}")
+    private String kafkaBrokerHost;
+    @Value("${kafkaBrokerPort}")
+    private String kafkaBrokerPort;
+
 
     public void start() {
         try {
             System.out.println("Anonymizer .................");
             Properties props = new Properties();
             props.put(StreamsConfig.APPLICATION_ID_CONFIG, "streams-pipe");
-            props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+            props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBrokerHost + ":" + kafkaBrokerPort);
             props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
             props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
             final StreamsBuilder builder = new StreamsBuilder();
 
-            KStream<String, String> source = builder.stream("input");
+            KStream<String, String> source = builder.stream(kafkaInputTopic);
             source.mapValues(value -> anonymize(value))
-                    .to("output", Produced.with(Serdes.String(), Serdes.String()));
+                    .to(kafkaOutputTopic, Produced.with(Serdes.String(), Serdes.String()));
 
             final Topology topology = builder.build();
 
