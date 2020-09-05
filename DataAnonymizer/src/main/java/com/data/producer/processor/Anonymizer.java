@@ -56,14 +56,14 @@ public class Anonymizer {
             final CountDownLatch latch = new CountDownLatch(1);
 
             addShutDownHook(streams, latch);
-
-            try {
-                streams.start();
-                latch.await();
-            } catch (Throwable e) {
-                System.exit(1);
-            }
-            System.exit(0);
+            streams.start();
+//            try {
+//                streams.start();
+//                latch.await();
+//            } catch (Throwable e) {
+//                System.exit(1);
+//            }
+//            System.exit(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
